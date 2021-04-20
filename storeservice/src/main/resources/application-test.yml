@@ -1,0 +1,45 @@
+server:
+  port: 9901
+spring:
+  application:
+    name: storeservice
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  # 数据源
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/spikesystem?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT&useSSL=false
+    username: root
+    password: root
+# mybatis配置
+mybatis:
+  type-aliases-package: com.demo.springboot.storeservice.entity
+  mapper-locations: classpath:mappers/*Mapper.xml
+  config-location: classpath:mybatis-config.xml
+## rocketMQ 配置（RocketMQAutoConfiguration）
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: order-group
+## redis配置
+aliyun:
+  ## redis配置
+  redis:
+    port: 6379
+    host: localhost
+    password: ccadmin1QAZ
+    jedis:
+      pool:
+        # 最大连接数
+        max-active: 1000
+        # 最大空闲连接数
+        max-idle: 8
+        # 最小空闲连接数
+        min-idle: 3
+        # 连接分配在池被耗尽时，抛出异常之前应该阻塞的最长时间（ms毫秒）
+        max-wait: 1000
+      # 连接超时时间
+    timeout: 2000
+

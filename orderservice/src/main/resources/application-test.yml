@@ -1,0 +1,17 @@
+server:
+  port: 9902
+spring:
+  application:
+    name: orderservice
+  # 数据源
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/spikesystem?serverTimezone=UTC&useSSL=false
+    username: root
+    password: root
+    name: spikesystem
+# mybatis配置
+mybatis:
+  type-aliases-package: com.demo.springboot.orderservice.entity
+  mapper-locations: classpath:mappers/*Mapper.xml
+  config-location: classpath:mybatis-config.xml

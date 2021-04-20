@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.springboot.orderservice.dao.TicketOrderMapper">
+    <resultMap id="BaseResultMap" type="com.demo.springboot.orderservice.entity.TicketOrder">
+        <id column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_items" jdbcType="VARCHAR" property="orderItems"/>
+        <result column="order_price" jdbcType="DECIMAL" property="orderPrice"/>
+        <result column="order_vip_price" jdbcType="DECIMAL" property="orderVipPrice"/>
+        <result column="order_product" jdbcType="VARCHAR" property="orderProduct"/>
+        <result column="order_product_num" jdbcType="INTEGER" property="orderProductNum"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_by" jdbcType="VARCHAR" property="modifyBy"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        order_id,
+        order_items,
+        order_price,
+        order_vip_price,
+        order_product,
+        order_product_num,
+        create_by,
+        create_date,
+        modify_by,
+        modify_date,
+        status
+    </sql>
+    <select id="selectByExample" parameterType="com.demo.springboot.orderservice.entity.TicketOrderExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from tbl_ticket_order
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart != null and limitSize >= 0">
+            limit #{limitStart} , #{limitSize}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_ticket_order
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from tbl_ticket_order
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.demo.springboot.orderservice.entity.TicketOrderExample">
+        delete
+        from tbl_ticket_order
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.demo.springboot.orderservice.entity.TicketOrder">
+        insert into tbl_ticket_order (order_id, order_items, order_price,
+                                      order_vip_price, order_product, order_product_num,
+                                      create_by, create_date, modify_by,
+                                      modify_date, status)
+        values (#{orderId,jdbcType=VARCHAR}, #{orderItems,jdbcType=VARCHAR}, #{orderPrice,jdbcType=DECIMAL},
+                #{orderVipPrice,jdbcType=DECIMAL}, #{orderProduct,jdbcType=VARCHAR},
+                #{orderProductNum,jdbcType=INTEGER},
+                #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{modifyBy,jdbcType=VARCHAR},
+                #{modifyDate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.demo.springboot.orderservice.entity.TicketOrder">
+        insert into tbl_ticket_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="orderItems != null">
+                order_items,
+            </if>
+            <if test="orderPrice != null">
+                order_price,
+            </if>
+            <if test="orderVipPrice != null">
+                order_vip_price,
+            </if>
+            <if test="orderProduct != null">
+                order_product,
+            </if>
+            <if test="orderProductNum != null">
+                order_product_num,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="modifyBy != null">
+                modify_by,
+            </if>
+            <if test="modifyDate != null">
+                modify_date,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderItems != null">
+                #{orderItems,jdbcType=VARCHAR},
+            </if>
+            <if test="orderPrice != null">
+                #{orderPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="orderVipPrice != null">
+                #{orderVipPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="orderProduct != null">
+                #{orderProduct,jdbcType=VARCHAR},
+            </if>
+            <if test="orderProductNum != null">
+                #{orderProductNum,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyBy != null">
+                #{modifyBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.demo.springboot.orderservice.entity.TicketOrderExample"
+            resultType="java.lang.Long">
+        select count(*)
+        from tbl_ticket_order
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update tbl_ticket_order
+        <set>
+            <if test="record.orderId != null">
+                order_id = #{record.orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orderItems != null">
+                order_items = #{record.orderItems,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orderPrice != null">
+                order_price = #{record.orderPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.orderVipPrice != null">
+                order_vip_price = #{record.orderVipPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.orderProduct != null">
+                order_product = #{record.orderProduct,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orderProductNum != null">
+                order_product_num = #{record.orderProductNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createDate != null">
+                create_date = #{record.createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyBy != null">
+                modify_by = #{record.modifyBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.modifyDate != null">
+                modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update tbl_ticket_order
+        set order_id          = #{record.orderId,jdbcType=VARCHAR},
+            order_items       = #{record.orderItems,jdbcType=VARCHAR},
+            order_price       = #{record.orderPrice,jdbcType=DECIMAL},
+            order_vip_price   = #{record.orderVipPrice,jdbcType=DECIMAL},
+            order_product     = #{record.orderProduct,jdbcType=VARCHAR},
+            order_product_num = #{record.orderProductNum,jdbcType=INTEGER},
+            create_by         = #{record.createBy,jdbcType=VARCHAR},
+            create_date       = #{record.createDate,jdbcType=TIMESTAMP},
+            modify_by         = #{record.modifyBy,jdbcType=VARCHAR},
+            modify_date       = #{record.modifyDate,jdbcType=TIMESTAMP},
+            status            = #{record.status,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.demo.springboot.orderservice.entity.TicketOrder">
+        update tbl_ticket_order
+        <set>
+            <if test="orderItems != null">
+                order_items = #{orderItems,jdbcType=VARCHAR},
+            </if>
+            <if test="orderPrice != null">
+                order_price = #{orderPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="orderVipPrice != null">
+                order_vip_price = #{orderVipPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="orderProduct != null">
+                order_product = #{orderProduct,jdbcType=VARCHAR},
+            </if>
+            <if test="orderProductNum != null">
+                order_product_num = #{orderProductNum,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyBy != null">
+                modify_by = #{modifyBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.demo.springboot.orderservice.entity.TicketOrder">
+        update tbl_ticket_order
+        set order_items       = #{orderItems,jdbcType=VARCHAR},
+            order_price       = #{orderPrice,jdbcType=DECIMAL},
+            order_vip_price   = #{orderVipPrice,jdbcType=DECIMAL},
+            order_product     = #{orderProduct,jdbcType=VARCHAR},
+            order_product_num = #{orderProductNum,jdbcType=INTEGER},
+            create_by         = #{createBy,jdbcType=VARCHAR},
+            create_date       = #{createDate,jdbcType=TIMESTAMP},
+            modify_by         = #{modifyBy,jdbcType=VARCHAR},
+            modify_date       = #{modifyDate,jdbcType=TIMESTAMP},
+            status            = #{status,jdbcType=INTEGER}
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+</mapper>
