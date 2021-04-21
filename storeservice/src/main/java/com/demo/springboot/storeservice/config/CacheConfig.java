@@ -66,7 +66,7 @@ public class CacheConfig {
                     @Override
                     public Object load(@NonNull String s) throws Exception {
                         // 每个秒杀服务1000 张票，部署10个服务卖出1W张票
-                        return 1000;
+                        return new AtomicInteger(1000);
                     }
                 });
     }

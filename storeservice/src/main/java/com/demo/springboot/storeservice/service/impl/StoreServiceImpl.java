@@ -13,7 +13,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Wenyi Cao
@@ -34,7 +37,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Autowired
     private RedisTemplate redisTemplate;
-    
+
     @Autowired
     private LoadingCache ticketStoreCache;
 
@@ -52,11 +55,16 @@ public class StoreServiceImpl implements StoreService {
 
         // todo  ...
         // 1.本地内存扣减库存
-        ticketStoreCache.get(productId)
+        AtomicInteger cache = AtomicInteger.class.cast(ticketStoreCache.get(productId));
+        ticketStoreCache.put(productId, new AtomicInteger(cache.get() - num));
         // 2.redis 统一扣减库存
+        redisTemplate.opsForValue().decrement(productId, num);
         // 3.发送异步消息：创建订单
-
-        return null;
+        Map<String, Object> msg = new HashMap<>(2);
+        msg.put("productId", productId);
+        msg.put("num", num);
+        rocketMQTemplate.syncSend("order_topic", msg);
+        return new ServiceResult("200", "扣减库存成功");
     }
 
     @Override

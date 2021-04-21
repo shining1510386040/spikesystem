@@ -1,5 +1,7 @@
 server:
   port: 9903
+  ## 支付服务的域名
+  service-domain: localhost:9903
 spring:
   application:
     name: paymentservice
@@ -14,3 +16,12 @@ mybatis:
   type-aliases-package: com.demo.springboot.storeservice.entity
   mapper-locations: classpath:mappers/*Mapper.xml
   config-location: classpath:mybatis-config.xml
+#微信app支付
+pay:
+  wxpay:
+    app:
+      appID: 公众号id
+      mchID: 商户id
+      key: 设置的私钥
+      certPath: static/cert/wxpay/apiclient_cert.p12 # 从微信商户平台下载的安全证书存放的路径、我放在resources下面,切记一定要看看target目录下的class文件下有没有打包apiclient_cert.p12文件
+      payNotifyUrl: ${server.service-domain}/wxPay/callback # 微信支付成功的异步通知接口

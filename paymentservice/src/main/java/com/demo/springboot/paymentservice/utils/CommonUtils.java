@@ -7,8 +7,11 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -156,6 +159,29 @@ public class CommonUtils {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String ret = sdf.format(new Date());
         return ret;
+    }
+
+    /**
+     * @param
+     * @return
+     * @author Wenyi Cao
+     * @version 1.0
+     * @description md5加密
+     * @date 2021/4/21 10:13
+     */
+    public static String md5(String origin) {
+        byte[] secretBytes = null;
+        try {
+            secretBytes = MessageDigest.getInstance("md5").digest(
+                    origin.getBytes());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("没有这个md5算法！");
+        }
+        String md5code = new BigInteger(1, secretBytes).toString(16);
+        for (int i = 0; i < 32 - md5code.length(); i++) {
+            md5code = "0" + md5code;
+        }
+        return md5code;
     }
 
 
